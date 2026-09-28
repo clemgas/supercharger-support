@@ -54,6 +54,7 @@ if (supportEmail) {
   document.querySelectorAll(".contact-email").forEach(el => {el.hidden=false;el.href="mailto:"+supportEmail;el.textContent=supportEmail;});
 }
 if (location.hash.endsWith("-en")) locale="en";
+else if (["#support", "#privacy"].includes(location.hash)) locale="fr";
 render();
 </script>
 </body></html>
