@@ -48,7 +48,12 @@ function render() {
   button.textContent = locale === "fr" ? "EN" : "FR";
   button.setAttribute("aria-label", locale === "fr" ? "Switch to English" : "Passer en français");
 }
-document.getElementById("language").addEventListener("click", () => {locale = locale === "fr" ? "en" : "fr";render();});
+document.getElementById("language").addEventListener("click", () => {
+  locale = locale === "fr" ? "en" : "fr";
+  const section = location.hash.includes("support") ? "support" : location.hash.includes("privacy") ? "privacy" : null;
+  if (section) history.replaceState(null, "", `#${section}${locale === "en" ? "-en" : ""}`);
+  render();
+});
 if (supportEmail) {
   document.querySelectorAll(".contact-pending").forEach(el => el.hidden = true);
   document.querySelectorAll(".contact-email").forEach(el => {el.hidden=false;el.href="mailto:"+supportEmail;el.textContent=supportEmail;});
@@ -56,5 +61,10 @@ if (supportEmail) {
 if (location.hash.endsWith("-en")) locale="en";
 else if (["#support", "#privacy"].includes(location.hash)) locale="fr";
 render();
+window.addEventListener("hashchange", () => {
+  if (location.hash.endsWith("-en")) locale = "en";
+  else if (["#support", "#privacy"].includes(location.hash)) locale = "fr";
+  render();
+});
 </script>
 </body></html>
